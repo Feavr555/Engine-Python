@@ -105,8 +105,8 @@ libgame.CreateEntityManager.restype = None
 libgame.ActivePhysics.argtypes = [ctypes.POINTER(APP),ctypes.POINTER(EntityManager),ctypes.c_float]
 libgame.ActivePhysics.restype = None
 
-libgame.Render_1.argtypes = [ctypes.POINTER(APP)]
-libgame.Render_1.restype = None
+libgame.DrawBegin.argtypes = [ctypes.POINTER(APP)]
+libgame.DrawBegin.restype = None
 
 libgame.GetDeltaTime.argtypes = [ctypes.POINTER(APP)]
 libgame.GetDeltaTime.restype = ctypes.c_float
@@ -122,8 +122,8 @@ libgame.GetEvent.restype = ctypes.c_bool
 libgame.GetCam.argtypes = [ctypes.POINTER(APP)]
 libgame.GetCam.restype = SDL_FRect
 
-libgame.Render_2.argtypes = [ctypes.POINTER(APP)]
-libgame.Render_2.restype = None
+libgame.DrawEnd.argtypes = [ctypes.POINTER(APP)]
+libgame.DrawEnd.restype = None
 
 libgame.EventProcess_Exit.argtypes = [ctypes.POINTER(APP)]
 libgame.EventProcess_Exit.restype = ctypes.c_bool
@@ -535,9 +535,9 @@ class Aplication:
 	def EventProcess(self):
 		return libgame.EventProcess_Exit(self._get_app_ptr())
 	def DrawBegin(self):
-		libgame.Render_1(self._get_app_ptr())
+		libgame.DrawBegin(self._get_app_ptr())
 	def DrawEnd(self):
-		libgame.Render_2(self._get_app_ptr())
+		libgame.DrawEnd(self._get_app_ptr())
 	def Quit(self):
 		libgame.Destroy(self._get_app_ptr())
 	def CreateEntityManager(self):

@@ -6,7 +6,7 @@ objects		:= obj
 OBJS		  := $(patsubst $(source)/%.c,$(objects)/%.o,$(SRC))
 #LIBS		  := -Llibs -lcglm -lSDL3 -lSDL3_image -lc -lm
 LIBS		  := -Llibs -lSDL3 -lSDL3_image -lc -lm
-PROJECT		:= libgame2.so
+PROJECT		:= libgame.so
 
 all: config $(PROJECT)
 
@@ -22,6 +22,3 @@ config:
 clean:
 	rm -fr obj
 	rm $(PROJECT)
-
-1:
-	gcc main.c src/loadshaders.c obj/glad.o -o game -lSDL3 -Ilibs -Iinc

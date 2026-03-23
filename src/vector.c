@@ -30,8 +30,11 @@ void *Vector_getValue(Vector *vector, int index) {
 }
 
 void Vector_reserve(Vector *vector, int reserve) {
-	vector->data = realloc(vector->data, reserve*vector->elem_size);
-	vector->capacity = reserve;
+	void *resize = realloc(vector->data, reserve*vector->elem_size);
+  if (resize != NULL) {
+    vector->data     = resize;
+	  vector->capacity = reserve;
+  }
 }
 
 void Vector_destroy(Vector *vector) {

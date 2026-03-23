@@ -127,23 +127,27 @@ void ActivePhysics(APP* app,EntityManager* man,float dt)
 	physicsSystem(&app->p,man,dt);
 }
 
-void Render_1(APP *app)
+void DrawBegin(APP *app)
 {
 	float speed = 400.f;
 	limit_fps_start(&app->time);
 	app->dt = getDeltaTime(&app->time);
 	Vec2Zero(&app->camVel);
+
+  /*
 	if(app->keys[SDL_SCANCODE_W]) app->camVel.y-=1.f;
 	if(app->keys[SDL_SCANCODE_S]) app->camVel.y+=1.f;
 	if(app->keys[SDL_SCANCODE_A]) app->camVel.x-=1.f;
 	if(app->keys[SDL_SCANCODE_D]) app->camVel.x+=1.f;
+  */
+
 	app->cam.x += speed * app->camVel.x * app->dt;
 	app->cam.y += speed * app->camVel.y * app->dt;
 	fps(&app->time,app->window);
 	SDL_RenderClear(app->renderer);
 }
 
-void Render_2(APP *app)
+void DrawEnd(APP *app)
 {
 	SDL_SetRenderDrawColor(app->renderer,0xff,0xff,0xff,0xff);
 	SDL_RenderPresent(app->renderer);
