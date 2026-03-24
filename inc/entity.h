@@ -39,6 +39,7 @@ typedef struct{
 	char * id;
 	float timer,duration;
 	uint32_t frames_t;
+	uint64_t ID;
 }Entity;
 
 void InitEntity(Entity* e,Texture *texture,char *id,SDL_Renderer *renderer);

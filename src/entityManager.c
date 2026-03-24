@@ -7,6 +7,7 @@ void InitEntityManager(EntityManager *man,SDL_Renderer *renderer)
 	man->entities = Vector_init(sizeof(Entity));
 	Vector_reserve(man->entities,1000);
 	Init_TextureManager(&man->tman,renderer);
+	man->countIDs = 1;
 }
 void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
 {
@@ -18,10 +19,12 @@ void CreateEntity(EntityManager *man,char* sprite,char *name)
 	Texture *t = Search_TextureManager(&man->tman,sprite);
 	InitEntity(&e,t,name,man->renderer);
 	e.STATESPRITE = ANIMATION_TOKEN_STATIC;
+	e.ID = man->countIDs;
 	Vec2Zero(&e.position);
 	Vec2Zero(&e.velocity);
 	Vec2Zero(&e.aceleration);
 	Vector_pushback(man->entities,&e);
+	man->countIDs++;
 }
 void ChangSprite_EntityManager(EntityManager *man,const char *entity,const char* sprite)
 {
@@ -31,11 +34,22 @@ void ChangSprite_EntityManager(EntityManager *man,const char *entity,const char*
 }
 Entity *SearchEntity(EntityManager *man,const char* name)
 {
-	if(!man->entities->size) return NULL;
+	if(!man->entities->size) return nullptr;
 	Entity *e = Vector_getValue(man->entities,0);
 	for(uint32_t i=0; i<man->entities->size; i++)
 		if(!strcmp(name,(e++)->id)) return --e;
 	return NULL;
+}
+uint64_t getID_SearchEntity(EntityManager *man,const char*name)
+{
+	if(!man->entities->size) return 0;
+	Entity *e = Vector_getValue(man->entities,0);
+	for(uint32_t i=0; i<man->entities->size; ++i)
+		if(!strcmp(name,(e++)->id)) return (--e)->ID;
+	return 0;
+}
+Entity *getEntityByID(EntityManager *man,const uint64_t ID)
+{
 }
 void DrawEntities(EntityManager *man,float dt,SDL_FRect cam)
 {
