@@ -9,7 +9,7 @@ void InitEntityManager(EntityManager *man,SDL_Renderer *renderer)
 	Vector_reserve(man->entities,1000);
 	Init_TextureManager(&man->tman,renderer);
 	man->TableHash_Entities = nullptr;
-	man->countIDs = 1;
+	man->countIDs = 0;
 }
 void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
 {
@@ -21,13 +21,12 @@ void CreateEntity(EntityManager *man,char* sprite,char *name)
 	Texture *t = Search_TextureManager(&man->tman,sprite);
 	InitEntity(&e,t,name,man->renderer);
 	e.STATESPRITE = ANIMATION_TOKEN_STATIC;
-	e.ID = man->countIDs;
+	e.ID = man->countIDs++;
 	Vec2Zero(&e.position);
 	Vec2Zero(&e.velocity);
 	Vec2Zero(&e.aceleration);
 	shput(man->TableHash_Entities,name,e.ID);
 	Vector_pushback(man->entities,&e);
-	man->countIDs++;
 }
 void ChangSprite_EntityManager(EntityManager *man,const char *entity,const char* sprite)
 {
@@ -57,11 +56,11 @@ Entity *getEntityByID(EntityManager *man,const uint64_t ID)
 	uint64_t start = 0;
 	uint64_t ptr = 0;
 	uint64_t end = man->entities->size-1; // An element size=1
-	while(end <= start){
+	while(end >= start){
 		ptr = (start + end)/2;
 		if((e+ptr)->ID == ID) return (e+ptr);
-		else if((e+ptr)->ID < ID) first = ptr+1;
-		else last = ptr-1;
+		else if((e+ptr)->ID < ID) start = ptr+1;
+		else end = ptr-1;
 	}
 	return nullptr;
 }
