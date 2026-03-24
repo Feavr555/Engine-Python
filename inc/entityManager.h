@@ -4,9 +4,15 @@
 #include <vector.h>
 
 typedef struct{
+	const char*key;
+	size_t value;
+}TableHash;
+
+typedef struct{
 	Vector* entities;
 	SDL_Renderer *renderer;
 	TextureManager tman;
+	TableHash *TableHash_Entities;
 	uint64_t countIDs;
 }EntityManager;
 

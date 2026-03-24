@@ -1,5 +1,6 @@
 #include <entityManager.h>
 #include <utils.h>
+#include <stb/stb_ds.h>
 
 void InitEntityManager(EntityManager *man,SDL_Renderer *renderer)
 {
@@ -7,6 +8,7 @@ void InitEntityManager(EntityManager *man,SDL_Renderer *renderer)
 	man->entities = Vector_init(sizeof(Entity));
 	Vector_reserve(man->entities,1000);
 	Init_TextureManager(&man->tman,renderer);
+	man->TableHash_Entities = nullptr;
 	man->countIDs = 1;
 }
 void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
@@ -23,6 +25,7 @@ void CreateEntity(EntityManager *man,char* sprite,char *name)
 	Vec2Zero(&e.position);
 	Vec2Zero(&e.velocity);
 	Vec2Zero(&e.aceleration);
+	shput(man->TableHash_Entities,name,e.ID);
 	Vector_pushback(man->entities,&e);
 	man->countIDs++;
 }
@@ -42,15 +45,32 @@ Entity *SearchEntity(EntityManager *man,const char* name)
 }
 uint64_t getID_SearchEntity(EntityManager *man,const char*name)
 {
+	/* Method Entity Manager Public */
 	if(!man->entities->size) return 0;
-	Entity *e = Vector_getValue(man->entities,0);
-	for(uint32_t i=0; i<man->entities->size; ++i)
-		if(!strcmp(name,(e++)->id)) return (--e)->ID;
-	return 0;
+	int res = man->TableHash_Entities[shgeti(man->TableHash_Entities,name)].value;
+	return (res != -1) ? res : 0;
 }
 Entity *getEntityByID(EntityManager *man,const uint64_t ID)
 {
+	/* Method of EntityManager private | Search Binary */
+	Entity *e = Vector_getValue(man->entities,0); // first element
+	uint64_t start = 0;
+	uint64_t ptr = 0;
+	uint64_t end = man->entities->size-1; // An element size=1
+	while(end <= start){
+		ptr = (start + end)/2;
+		if((e+ptr)->ID == ID) return (e+ptr);
+		else if((e+ptr)->ID < ID) first = ptr+1;
+		else last = ptr-1;
+	}
+	return nullptr;
 }
+/* Start API setter public EntityManager */
+
+
+
+
+/* End API setter public EntityManager */
 void DrawEntities(EntityManager *man,float dt,SDL_FRect cam)
 {
 	if(!man->entities->size) return;
