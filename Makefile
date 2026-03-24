@@ -19,6 +19,11 @@ $(objects)/%.o: $(source)/%.c
 config:
 	mkdir -p obj 
 
+push:
+	git remote set-url origin \
+		git@github.com-Feavr555:Feavr555/Engine-Python.git
+	git push -u origin main
+
 clean:
 	rm -fr obj
 	rm $(PROJECT)
