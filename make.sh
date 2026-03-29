@@ -5,6 +5,7 @@ CC="gcc"
 FLAGS="-std=c23 -Wall -Werror -Wpedantic -Wextra -masm=intel -g -O3"
 OUT="libgame.so"
 LIB="-lSDL3 -lSDL3_image"
+LIB_STATIC="lib/libcomp.a"
 
 # Colores
 RED="\e[0;31m"
@@ -44,7 +45,7 @@ for i in ${SRC[@]}; do
 	fi
 done
 echo -e "$YELLOW[LINKANDO EJECUTABLE]$WHITE"
-$CC -shared ${OBJS[@]} $LIB -o $OUT
+$CC -shared ${OBJS[@]} $LIB_STATIC $LIB -o $OUT
 if [[ $? -eq 0 ]]; then
 	echo -e "$PURPLE[EJECUTABLE LISTO]$WHITE"
 else

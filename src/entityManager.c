@@ -1,6 +1,6 @@
 #include <entityManager.h>
 #include <utils.h>
-#include <stb/stb_ds.h>
+#include <stb_ds.h>
 
 void InitEntityManager(EntityManager *man,SDL_Renderer *renderer)
 {

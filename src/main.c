@@ -7,6 +7,7 @@
 #include <timer.h>
 #include <time.h>
 #include <stb_ds_implementation.c.h>
+#include <../lib/glad/glad.h>
 
 
 bool Init(APP *app,const char*title)
@@ -16,12 +17,13 @@ bool Init(APP *app,const char*title)
 	if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS)) return false;
 	app->window = SDL_CreateWindow(title,WIDTH,HEIGHT,SDL_WINDOW_RESIZABLE);
 	if(!app->window) return false;
-	app->renderer = SDL_CreateRenderer(app->window,NULL);
+	app->renderer = SDL_CreateRenderer(app->window,"opengl");
 	if(!app->renderer) return false;
 	app->statusGame = false;
 	//for(int i=0; i<SDL_GetNumRenderDrivers(); i++)
 	//	SDL_Log("%d. %s",i,SDL_GetRenderDriver(i));
 	//SDL_Log("Renderer => %s",SDL_GetRendererName(app->renderer));
+	gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
 
 	SDL_zero(app->e);
 	init_timer(&app->time);
