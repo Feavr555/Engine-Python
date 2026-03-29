@@ -23,7 +23,7 @@ void GetError(uint shader)
 		glGetShaderiv(shader,GL_INFO_LOG_LENGTH,&lengthinfo);
 		infolog = (char*)malloc(lengthinfo+20);
 		glGetShaderInfoLog(shader,lengthinfo,NULL,&infolog[0]);
-		printf("[ERROR]: %s\n",infolog);
+		printf("[ERROR]: [SHADER => %d] %s\n",shader,infolog);
 	}
 }
 
@@ -37,7 +37,7 @@ void GetErrorProgram(uint program)
 		glGetProgramiv(program,GL_INFO_LOG_LENGTH,&lengthinfo);
 		infolog = (char*)malloc(lengthinfo+20);
 		glGetProgramInfoLog(program,lengthinfo,NULL,&infolog[0]);
-		printf("[ERROR]: %s\n",infolog);
+		printf("[ERROR]: [PROGRAM => %d] %s\n",program,infolog);
 	}
 }
 
