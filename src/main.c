@@ -229,6 +229,10 @@ void DrawEnd(APP *app)
 
 void Destroy(APP *app)
 {
+	if(app->p.t){
+		SDL_WaitThread(app->p.t,nullptr);
+		app->p.t = nullptr;
+	}
 	SDL_DestroyRenderer(app->renderer);
 	SDL_DestroyWindow(app->window);
 	SDL_Quit();
