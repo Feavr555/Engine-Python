@@ -1,9 +1,29 @@
 #include <physicsSystem.h>
 
+// Headers experimental
+#include <SDL3/SDL.h>
+#include <../lib/glad/glad.h>
+#include <../lib/glad/loadshaders.h>
+
+/*
+ * TODO: SystemPhysics on GPU (OpenGL 4.3)
+ *
+ * [TODO]: Engine physics migrate from lib/shader.comp (on GPU)
+ * [TODO]: Build interface with API OpenGL from send info to GPU
+*/
+
+constexpr char shader_comp[] = {
+#embed "lib/shader.comp" suffix(,0x00)
+};
+
 void Init_physicsSystem(Physics *p,EntityManager *man,SDL_Window *window)
 {
 	SDL_GetWindowSize(window,&p->WIDTH_t,&p->HEIGHT_t);
 	p->window = window;
+	/* Experimental section Start */
+	p->program = 0x00;
+	p->program = LoadComp_t(shader_comp);
+	/* Experimental section End */
 	Entity *e = Vector_getValue(man->entities,0);
 	for(uint32_t i=0; i<man->entities->size; i++){
 		e->aceleration.x = 0.f;
@@ -11,6 +31,13 @@ void Init_physicsSystem(Physics *p,EntityManager *man,SDL_Window *window)
 		Vec2Zero(&e->velocity);
 		e++;
 	}
+}
+
+void EXPERIMENTAL_GPU_physicsSystem(Physics *p,EntityManager *man,float dt)
+{
+	(void)p;
+	(void)man;
+	(void)dt;
 }
 
 bool DetectColision(SDL_FRect e1,SDL_FRect e2)

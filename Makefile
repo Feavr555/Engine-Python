@@ -1,11 +1,11 @@
 #CFLAGS	  := -std=c23 -Wall -pedantic -Wall -Wpedantic -Werror -Wextra
-include	  := -Iinc -Ilibs
+include	  := --embed-dir=. -Iinc -Ilibs
 source		:= src
 SRC		    := $(shell find $(source) -type f -name '*.c')
 objects		:= obj
 OBJS		  := $(patsubst $(source)/%.c,$(objects)/%.o,$(SRC))
 #LIBS		  := -Llibs -lcglm -lSDL3 -lSDL3_image -lc -lm
-LIBS		  := -Llibs -lSDL3 -lSDL3_image -lc -lm
+LIBS		  := lib/libcomp.a -Llibs -lSDL3 -lSDL3_image -lc -lm
 PROJECT		:= libgame.so
 
 all: config $(PROJECT)
@@ -18,6 +18,11 @@ $(objects)/%.o: $(source)/%.c
 
 config:
 	mkdir -p obj 
+
+push:
+	git remote set-url origin \
+		git@github.com-Feavr555:Feavr555/Engine-Python.git
+	git push -u origin main
 
 clean:
 	rm -fr obj

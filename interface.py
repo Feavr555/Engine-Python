@@ -23,8 +23,12 @@ class APP(ctypes.Structure):
 
 
 class EntityManager(ctypes.Structure):
+<<<<<<< HEAD
     _fields_ = [("opaque", ctypes.c_byte * 32)]   # sizeof(EntityManager) = 32
 
+=======
+	_fields_ = [("opaque", ctypes.c_byte * 48)]   # sizeof(EntityManager) = 48
+>>>>>>> 2bb78a3b6198990048b17738e86ac3cefde2831f
 
 class TextureManager(ctypes.Structure):
     _fields_ = [("opaque", ctypes.c_byte * 16)]   # sizeof(TextureManager) = 16
