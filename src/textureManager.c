@@ -34,5 +34,6 @@ void Free_TextureManager(TextureManager *tman)
 		t++;
 	}
 	Vector_destroy(tman->textures);
+	tman->textures = nullptr;
 }
 

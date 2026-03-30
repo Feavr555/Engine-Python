@@ -31,6 +31,12 @@ void Init_physicsSystem(Physics *p,EntityManager *man,SDL_Window *window)
 		Vec2Zero(&e->velocity);
 		e++;
 	}
+	p->t = nullptr;
+	p->dt = 0.f;
+	p->man = nullptr;
+	SDL_AddAtomicInt(&p->a,0);
+	// Experimental function from threads
+	SDL_Log("Atomic Int: %d",SDL_GetAtomicInt(&p->a));
 }
 
 void EXPERIMENTAL_GPU_physicsSystem(Physics *p,EntityManager *man,float dt)
@@ -51,19 +57,20 @@ bool DetectColision(SDL_FRect e1,SDL_FRect e2)
 	return (moduleQuad <= addRadio*addRadio);
 }
 
-void physicsSystem(Physics *p,EntityManager *man,float dt)
+void physicsSystem(Physics *p)
 {
 	(void)p;
+	if(p->man->entities == nullptr) return;
 	const float speed = 400.f;
 	int width,height;
 	SDL_GetWindowSize(p->window,&width,&height);
-	Entity *e = Vector_getValue(man->entities,0);
-	for(uint32_t i=0; i<man->entities->size; i++){
+	Entity *e = Vector_getValue(p->man->entities,0);
+	for(uint32_t i=0; i<p->man->entities->size; i++){
 		if(e->position.y < height)
 			e->velocity.y += e->aceleration.y;
 		e->velocity.x += e->aceleration.x;
 		Entity* e2 = e+1;
-		for(uint32_t j=i+1; j<man->entities->size; ++j){
+		for(uint32_t j=i+1; j<p->man->entities->size; ++j){
 			if(DetectColision(e->dimension,e2->dimension)){
 				if(e->colisions){
 					e->velocity.x *= -1.f;
@@ -79,8 +86,8 @@ void physicsSystem(Physics *p,EntityManager *man,float dt)
 				}
 			} e2++;
 		}
-		e->position.x += speed * e->velocity.x * dt;
-		e->position.y += speed * e->velocity.y * dt;
+		e->position.x += speed * e->velocity.x * p->dt;
+		e->position.y += speed * e->velocity.y * p->dt;
 		e->dimension.x = e->position.x;
 		e->dimension.y = e->position.y;
 		//if((e->position.x + e->dimension.w) >= width) e->position.x = width - e->dimension.w;

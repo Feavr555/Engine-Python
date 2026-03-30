@@ -84,6 +84,7 @@ void DestroyEntityManager(EntityManager *man)
 		DestroyEntity(e++);
 	Free_TextureManager(&man->tman);
 	Vector_destroy(man->entities);
+	man->entities = nullptr;
 }
 void Void_TexturesAndEntities(EntityManager *man)
 {
