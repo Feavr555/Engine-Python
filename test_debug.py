@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 else:
                     o.SetVelocity(0.0,0.1)
                 num += 1
-                print(f"\033cEntities => {num}\nFPS => {app.GetFPS()}")
+                print(f"\033cEntities => {num}\nFPS => {app.GetFPS()}\nMem => {app.GetMem()}")
         e = man.SearchEntity("CAPA")
         man.SetPosition(e,x,y)
         man.Draw(app.GetDeltaTime(),app.GetCam())
