@@ -16,6 +16,10 @@ PURPLE="\e[0;35m"
 CYAN="\e[0;36m"
 YELLOW="\e[1;33m"
 
+DEBUG=""
+if [[ $1 == "debug" ]];then
+	DEBUG="-D__MODE_DEBUG__"
+fi
 
 mapfile -t SRC < <(ls src/*.c)
 mkdir -p obj
@@ -33,7 +37,7 @@ fi
 for i in ${SRC[@]}; do
 	OBJ=${i/#src/obj}
 	if [[ ! -e ${OBJ/.c/.o} ]] || [[ $i -nt ${OBJ/.c/.o} ]];then
-		$CC $FLAGS $i --embed-dir=. -Iinc -c -o ${OBJ/.c/.o}
+		$CC $DEBUG $FLAGS $i --embed-dir=. -Iinc -c -o ${OBJ/.c/.o}
 		if [[ $? -eq 0 ]];then
 			echo -e "[COMPILANDO $YELLOW$por %$WHITE]: => " $GREEN${i/#'src/'}$WHITE
 		else
@@ -50,6 +54,9 @@ if [[ $? -eq 0 ]]; then
 	echo -e "$PURPLE[EJECUTABLE LISTO]$WHITE"
 else
 	echo -e "$RED[ERROR]:$GREEN => FALLA EN EL LINKADO$WHITE"
+fi
+if [[ $1 == "debug" ]];then
+	$CC ${OBJS[@]} $LIB_STATIC $LIB -o game_debug
 fi
 
 

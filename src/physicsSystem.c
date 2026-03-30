@@ -35,6 +35,7 @@ void Init_physicsSystem(Physics *p,EntityManager *man,SDL_Window *window)
 	p->dt = 0.f;
 	p->man = nullptr;
 	SDL_AddAtomicInt(&p->a,0);
+	SDL_SetAtomicInt(&p->a,0);
 	// Experimental function from threads
 	SDL_Log("Atomic Int: %d",SDL_GetAtomicInt(&p->a));
 }

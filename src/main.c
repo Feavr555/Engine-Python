@@ -9,6 +9,8 @@
 #include <stb_ds_implementation.c.h>
 #include <../lib/glad/glad.h>
 
+#include <debug_mode.h>
+
 #ifdef _WIN32
 #include <windows.h>
 #include <stdio.h>
@@ -177,7 +179,8 @@ void CreateEntityManager(APP* app,EntityManager* man)
 static int SDLCALL MASK_physicsSystem(void *ptr)
 {
 	Physics *p = ptr;
-	physicsSystem(p);
+	if(p->man->entities != nullptr)
+		physicsSystem(p);
 	return 0;
 }
 
@@ -186,6 +189,7 @@ void ActivePhysics(APP* app,EntityManager* man,float dt)
 	app->p.dt = dt;
 	app->p.man = man;
 	if(!SDL_GetAtomicInt(&app->p.a)){
+		SDL_WaitThread(app->p.t,nullptr);
 		app->p.t = SDL_CreateThread(MASK_physicsSystem,"PHYSICS_THREAD",&app->p);
 		SDL_AtomicIncRef(&app->p.a);
 	}else if(SDL_GetAtomicInt(&app->p.a)){
@@ -225,7 +229,6 @@ void DrawEnd(APP *app)
 
 void Destroy(APP *app)
 {
-	SDL_WaitThread(app->p.t,nullptr);
 	SDL_DestroyRenderer(app->renderer);
 	SDL_DestroyWindow(app->window);
 	SDL_Quit();
@@ -242,5 +245,11 @@ int main()
 	SDL_Log("sizeof(Physics)        => %ld BYTES",sizeof(Physics));
 	SDL_Log("sizeof(TextureManager) => %ld BYTES",sizeof(TextureManager));
 	SDL_Log("sizeof(Texture)        => %ld BYTES",sizeof(Texture));
+#ifdef __MODE_DEBUG__
+	APP app;
+	Init(&app,"Mode Debug");
+	game(&app);
+	Destroy(&app);
+#endif // __MODE_DEBUG__
 }
 
