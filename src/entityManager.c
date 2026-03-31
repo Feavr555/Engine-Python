@@ -17,6 +17,7 @@ void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
 }
 void CreateEntity(EntityManager *man,char* sprite,char *name)
 {
+	if(man->entities->size > 10000) return;
 	Entity e;
 	Texture *t = Search_TextureManager(&man->tman,sprite);
 	InitEntity(&e,t,name,man->renderer);
