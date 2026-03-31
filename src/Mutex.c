@@ -47,4 +47,9 @@ void MUTEX_createProcess(Mutex *mu)
 	}
 }
 
+void MUTEX_Destroy(Mutex *mu)
+{
+	SDL_WaitThread(mu->t,nullptr);
+}
+
 

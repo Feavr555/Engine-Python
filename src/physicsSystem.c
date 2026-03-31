@@ -105,7 +105,9 @@ void physicsSystem(Physics *p)
 
 static int SDLCALL wrapper_physicsSystem(void *ptr)
 {
+	SDL_LockMutex(((Physics*)ptr)->mu.mu);
 	physicsSystem((Physics*)ptr);
+	SDL_UnlockMutex(((Physics*)ptr)->mu.mu);
 	return 0;
 }
 void TH_physicsSystem(Physics *p)
@@ -113,4 +115,9 @@ void TH_physicsSystem(Physics *p)
 	MUTEX_setFunction(&p->mu,wrapper_physicsSystem,p);
 	MUTEX_createProcess(&p->mu);
 }
+void physicsSystemQuit(Physics *p)
+{
+	MUTEX_Destroy(&p->mu);
+}
+
 

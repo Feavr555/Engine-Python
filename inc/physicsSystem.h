@@ -18,5 +18,6 @@ void Init_physicsSystem(Physics *p,EntityManager *man,SDL_Window *window);
 void physicsSystem(Physics *p);
 void TH_physicsSystem(Physics *p);
 void setPhysicsSystem(Physics *p,bool state);
+void physicsSystemQuit(Physics *p);
 
 

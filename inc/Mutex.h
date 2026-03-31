@@ -22,5 +22,5 @@ typedef struct{
 void MUTEX_Init(Mutex *mu);
 void MUTEX_setFunction(Mutex *mu,int (*ptr_thread)(void*),void *args);
 void MUTEX_createProcess(Mutex *mu);
-
+void MUTEX_Destroy(Mutex *mu);
 

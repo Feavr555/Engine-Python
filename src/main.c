@@ -236,6 +236,7 @@ void DrawEnd(APP *app)
 
 void Destroy(APP *app)
 {
+	physicsSystemQuit(&app->p);
 	SDL_DestroyRenderer(app->renderer);
 	SDL_DestroyWindow(app->window);
 	SDL_Quit();
