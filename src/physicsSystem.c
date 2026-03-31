@@ -31,14 +31,13 @@ void Init_physicsSystem(Physics *p,EntityManager *man,SDL_Window *window)
 		Vec2Zero(&e->velocity);
 		e++;
 	}
-	p->t = nullptr;
 	p->dt = 0.f;
 	p->man = nullptr;
-	SDL_AddAtomicInt(&p->a,0);
-	SDL_SetAtomicInt(&p->a,0);
-	// Experimental function from threads
-	SDL_Log("Atomic Int: %d",SDL_GetAtomicInt(&p->a));
+	MUTEX_Init(&p->mu);
+	p->power = false;
 }
+
+void setPhysicsSystem(Physics *p,bool state) { p->power = state; }
 
 void EXPERIMENTAL_GPU_physicsSystem(Physics *p,EntityManager *man,float dt)
 {
@@ -60,7 +59,7 @@ bool DetectColision(SDL_FRect e1,SDL_FRect e2)
 
 void physicsSystem(Physics *p)
 {
-	(void)p;
+	if(!p->power) return;
 	if(p->man->entities == nullptr) return;
 	const float speed = 400.f;
 	int width,height;
@@ -102,5 +101,16 @@ void physicsSystem(Physics *p)
 		if(e->position.y <= 0) e->velocity.y *= -1.f;
 		e++;
 	}
+}
+
+static int SDLCALL wrapper_physicsSystem(void *ptr)
+{
+	physicsSystem((Physics*)ptr);
+	return 0;
+}
+void TH_physicsSystem(Physics *p)
+{
+	MUTEX_setFunction(&p->mu,wrapper_physicsSystem,p);
+	MUTEX_createProcess(&p->mu);
 }
 

@@ -4,7 +4,7 @@
 #include <time.h>
 
 #ifdef __MODE_DEBUG__
-
+/*
 static int SDLCALL __MASK_physicsSystem(void *ptr)
 {
         Physics *p = ptr;
@@ -28,7 +28,7 @@ void __ActivePhysics(APP* app,EntityManager* man,float dt)
         }
         //physicsSystem(&app->p,man,dt);
 }
-
+*/
 void game(APP *app)
 {
 	SDL_Event e;
@@ -96,7 +96,10 @@ void game(APP *app)
 		fps(&app->time,app->window);
 		SDL_GetMouseState(&app->mouse_x,&app->mouse_y);
 
-		__ActivePhysics(app,&man,dt);
+		app->p.man = &man;
+		app->p.dt = dt;
+		TH_physicsSystem(&app->p);
+		//__ActivePhysics(app,&man,dt);
 		//__ActivePhysics(app,&game.man,dt);
 		/*app->p.dt = dt;
 		app->p.man = &man;

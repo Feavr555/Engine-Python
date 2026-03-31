@@ -175,7 +175,7 @@ void CreateEntityManager(APP* app,EntityManager* man)
 	Init_physicsSystem(&app->p,man,app->window);
 }
 
-
+/*
 static int SDLCALL MASK_physicsSystem(void *ptr)
 {
 	Physics *p = ptr;
@@ -183,12 +183,19 @@ static int SDLCALL MASK_physicsSystem(void *ptr)
 		physicsSystem(p);
 	return 0;
 }
+*/
+
+void setActivePhysics(APP* app,bool state)
+{
+	setPhysicsSystem(&app->p,state);
+}
 
 void ActivePhysics(APP* app,EntityManager* man,float dt)
 {
 	app->p.dt = dt;
 	app->p.man = man;
-	if(!SDL_GetAtomicInt(&app->p.a)){
+	TH_physicsSystem(&app->p);
+/*	if(!SDL_GetAtomicInt(&app->p.a)){
 		SDL_WaitThread(app->p.t,nullptr);
 		app->p.t = SDL_CreateThread(MASK_physicsSystem,"PHYSICS_THREAD",&app->p);
 		SDL_AtomicIncRef(&app->p.a);
@@ -197,7 +204,7 @@ void ActivePhysics(APP* app,EntityManager* man,float dt)
 		if(statePhysics != SDL_THREAD_ALIVE || statePhysics == SDL_THREAD_COMPLETE)
 			SDL_AtomicDecRef(&app->p.a);
 	}
-	//physicsSystem(&app->p,man,dt);
+	//physicsSystem(&app->p,man,dt);*/
 }
 
 void DrawBegin(APP *app)
@@ -229,10 +236,6 @@ void DrawEnd(APP *app)
 
 void Destroy(APP *app)
 {
-	if(app->p.t){
-		SDL_WaitThread(app->p.t,nullptr);
-		app->p.t = nullptr;
-	}
 	SDL_DestroyRenderer(app->renderer);
 	SDL_DestroyWindow(app->window);
 	SDL_Quit();
