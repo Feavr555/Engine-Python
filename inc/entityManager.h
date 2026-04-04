@@ -2,6 +2,7 @@
 #include <entity.h>
 #include <textureManager.h>
 #include <vector.h>
+#include <Mutex.h>
 
 typedef struct{
 	const char*key;
@@ -14,6 +15,7 @@ typedef struct{
 	TextureManager tman;
 	TableHash *TableHash_Entities;
 	uint64_t countIDs;
+	Mutex mu;
 }EntityManager;
 
 void InitEntityManager(EntityManager *man,SDL_Renderer *renderer);

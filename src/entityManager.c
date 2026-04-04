@@ -10,6 +10,7 @@ void InitEntityManager(EntityManager *man,SDL_Renderer *renderer)
 	Init_TextureManager(&man->tman,renderer);
 	man->TableHash_Entities = nullptr;
 	man->countIDs = 0;
+	MUTEX_Init(&man->mu);
 }
 void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
 {
@@ -17,7 +18,8 @@ void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
 }
 void CreateEntity(EntityManager *man,char* sprite,char *name)
 {
-	if(man->entities->size > 10000) return;
+	//if(man->entities->size > 10000) return;
+	SDL_LockMutex(man->mu.mu);
 	Entity e;
 	Texture *t = Search_TextureManager(&man->tman,sprite);
 	InitEntity(&e,t,name,man->renderer);
@@ -28,6 +30,7 @@ void CreateEntity(EntityManager *man,char* sprite,char *name)
 	Vec2Zero(&e.aceleration);
 	shput(man->TableHash_Entities,name,e.ID);
 	Vector_pushback(man->entities,&e);
+	SDL_UnlockMutex(man->mu.mu);
 }
 void ChangSprite_EntityManager(EntityManager *man,const char *entity,const char* sprite)
 {
@@ -80,6 +83,7 @@ void DrawEntities(EntityManager *man,float dt,SDL_FRect cam)
 }
 void DestroyEntityManager(EntityManager *man)
 {
+	MUTEX_Destroy(&man->mu);
 	Entity *e = Vector_getValue(man->entities,0);
 	for(uint32_t i=0; i<man->entities->size; i++)
 		DestroyEntity(e++);

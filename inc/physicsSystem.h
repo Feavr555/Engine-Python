@@ -8,7 +8,7 @@ typedef struct{
 	int WIDTH_t,HEIGHT_t;
 	SDL_Window *window;
 	EntityManager *man;
-	Mutex mu;
+	Mutex *mu;
 	bool power;
 	uint32_t program;
 	float dt;
