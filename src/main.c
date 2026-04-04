@@ -70,37 +70,6 @@ void Void_TexturesAndEntities(EntityManager *man);
 void DestroyEntityManager(EntityManager *man);
 */
 
-void SetPosition(Entity* e,float x,float y)
-{
-	e->position.x = x;
-	e->position.y = y;
-}
-
-void SetVelocity(Entity* e,float x,float y)
-{
-	e->velocity.x = x;
-	e->velocity.y = y;
-}
-
-void SetAceleration(Entity* e,float x,float y)
-{
-	e->aceleration.x = x;
-	e->aceleration.y = y;
-}
-
-void SetFrame(Entity* e,int col,int row,int state)
-{
-	e->columns = col;
-	e->rows = row;
-	e->STATESPRITE = state;
-}
-
-
-void SetDimension(Entity* e,float scale)
-{
-	e->dimension.w *= scale;
-	e->dimension.h *= scale;
-}
 
 float GetFPS(APP* app){ return (float)app->time.frames; }
 
@@ -121,43 +90,6 @@ bool GetEvent(APP* app,uint32_t EVENT)
 	return (SDL_GetKeyboardState(nullptr))[EVENT];
 }
 
-size_t GetMem()
-{
-/*
- *	Compilation => -Wall -Werror -Wpedantic
- *	Rule => tabs are tabs, not spaces, please!
-*/
-#ifdef _WIN32
-	PROCESS_MEMORY_COUNTERS pmc;
-	if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-		return (size_t)(pmc.WorkingSetSize / 2048); // Return the value in MB
-	}
-#endif
-
-#ifdef __linux__
-	FILE* fp = fopen("/proc/self/status", "r");
-	char lines[100];
-	// Initialize error to null
-	char *error = nullptr;
-	// gcc => non declared, put this and initialize
-	size_t num_mem = 0;
-
-	while (fgets(lines, sizeof(lines), fp)) {
-		if (strncmp(lines, "VmRSS:", 6) == 0){ // Returns 0 if everything went well
-			num_mem = strtol(lines + 6, &error, 10);
-			// Read the line information to get the amount in kb, start to read from the character 6
-			// if (lines == error) {
-			printf("Error: read file for ram");
-			return 0;
-		}else {
-			fclose(fp);
-			return (size_t)(num_mem / 1048); //Return the value in MB
-		}
-		break;
-	}
-	return num_mem;
-}
-#endif
 
 bool EventProcess_Exit(APP *app)
 {
