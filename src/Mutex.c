@@ -49,7 +49,17 @@ void MUTEX_createProcess(Mutex *mu)
 
 void MUTEX_Destroy(Mutex *mu)
 {
-	SDL_WaitThread(mu->t,nullptr);
+	SDL_ThreadState state = SDL_GetThreadState(mu->t);
+	switch(state){
+		case SDL_THREAD_UNKNOWN:
+			return;
+		case SDL_THREAD_ALIVE:
+			SDL_WaitThread(mu->t,nullptr);
+		case SDL_THREAD_DETACHED:
+			return;
+		case SDL_THREAD_COMPLETE:
+			SDL_WaitThread(mu->t,nullptr);
+	}
 }
 
 

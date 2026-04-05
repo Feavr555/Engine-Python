@@ -64,6 +64,37 @@ void DrawEntity(Entity* e,float dt,SDL_FRect camera)
 		}
 	}
 }
+
+void SetPosition(Entity* e,float x,float y)
+{
+	e->position.x = x;
+	e->position.y = y;
+}
+
+void SetVelocity(Entity* e,float x,float y)
+{
+	e->velocity.x = x;
+	e->velocity.y = y;
+}
+
+void SetAceleration(Entity* e,float x,float y)
+{
+	e->aceleration.x = x;
+	e->aceleration.y = y;
+}
+
+void SetFrame(Entity* e,int col,int row,int state)
+{
+	e->columns = col;
+	e->rows = row;
+	e->STATESPRITE = state;
+}
+
+void SetDimension(Entity* e,float scale)
+{
+	e->dimension.w *= scale;
+	e->dimension.h *= scale;
+}
 void DestroyEntity(Entity* e)
 {
 	SDL_DestroyTexture(e->sprite);

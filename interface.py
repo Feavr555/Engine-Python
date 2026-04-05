@@ -19,13 +19,13 @@ class SDL_Renderer(ctypes.Structure):
 
 
 class APP(ctypes.Structure):
-	_fields_ = [("opaque", ctypes.c_byte * 352)]   # sizeof(APP) = 352
+	_fields_ = [("opaque", ctypes.c_byte * 312)]   # sizeof(APP) = 312
 
 
 # What its? (<<<... HEAD, >>> 2bb..., =======?)
 class EntityManager(ctypes.Structure):
 #<<<<<<< HEAD
-	_fields_ = [("opaque", ctypes.c_byte * 48)]   # sizeof(EntityManager) = 48
+	_fields_ = [("opaque", ctypes.c_byte * 96)]   # sizeof(EntityManager) = 96
 
 #=======
 #	_fields_ = [("opaque", ctypes.c_byte * 48)]   # sizeof(EntityManager) = 48
@@ -44,7 +44,7 @@ class Timer(ctypes.Structure):
 
 
 class Phisics(ctypes.Structure):
-	_fields_ = [("opaque", ctypes.c_byte * 88)]   # sizeof(Phisics) = 88
+	_fields_ = [("opaque", ctypes.c_byte * 48)]   # sizeof(Phisics) = 48
 
 
 class Texture(ctypes.Structure):

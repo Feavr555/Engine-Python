@@ -31,9 +31,9 @@ void Init_physicsSystem(Physics *p,EntityManager *man,SDL_Window *window)
 		Vec2Zero(&e->velocity);
 		e++;
 	}
+	p->mu = &man->mu;
 	p->dt = 0.f;
 	p->man = nullptr;
-	MUTEX_Init(&p->mu);
 	p->power = false;
 }
 
@@ -105,19 +105,19 @@ void physicsSystem(Physics *p)
 
 static int SDLCALL wrapper_physicsSystem(void *ptr)
 {
-	SDL_LockMutex(((Physics*)ptr)->mu.mu);
+	SDL_LockMutex(((Physics*)ptr)->mu->mu);
 	physicsSystem((Physics*)ptr);
-	SDL_UnlockMutex(((Physics*)ptr)->mu.mu);
+	SDL_UnlockMutex(((Physics*)ptr)->mu->mu);
 	return 0;
 }
 void TH_physicsSystem(Physics *p)
 {
-	MUTEX_setFunction(&p->mu,wrapper_physicsSystem,p);
-	MUTEX_createProcess(&p->mu);
+	MUTEX_setFunction(p->mu,wrapper_physicsSystem,p);
+	MUTEX_createProcess(p->mu);
 }
 void physicsSystemQuit(Physics *p)
 {
-	MUTEX_Destroy(&p->mu);
+	(void)p;
 }
 
 

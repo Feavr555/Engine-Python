@@ -60,6 +60,7 @@ void game(APP *app)
 	o->dimension.h *= 0.5f;
 
 	srand(time(nullptr));
+	setPhysicsSystem(&app->p,true);
 	while(!app->statusGame){
 		if(SDL_PollEvent(&e))
 			if(e.type == SDL_EVENT_QUIT) break;
