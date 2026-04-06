@@ -1,4 +1,5 @@
 #include <Mutex.h>
+#include <stdlib.h>
 
 /*
  * DOCUMENTATION:

@@ -1,6 +1,7 @@
 #include <entityManager.h>
 #include <utils.h>
 #include <stb_ds.h>
+#include <stdio.h>
 
 void InitEntityManager(EntityManager *man,SDL_Renderer *renderer)
 {
@@ -16,10 +17,15 @@ void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
 {
 	Load_TextureManager(&man->tman,path,sprite);
 }
-void CreateEntity(EntityManager *man,char* sprite,char *name)
+void CreateEntity(EntityManager *man,char* sprite,char* name)
 {
+
+	if (man->mu.mu == NULL) {
+    printf("ERROR: El mutex no ha sido inicializado con SDL_CreateMutex()\n");
+	} else {
+		SDL_LockMutex(man->mu.mu);
+	}
 	//if(man->entities->size > 10000) return;
-	SDL_LockMutex(man->mu.mu);
 	Entity e;
 	Texture *t = Search_TextureManager(&man->tman,sprite);
 	InitEntity(&e,t,name,man->renderer);

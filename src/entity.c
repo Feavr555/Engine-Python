@@ -1,4 +1,5 @@
 #include <entity.h>
+#include <stdio.h>
 
 void InitEntity(Entity* e,Texture *texture,char *id,SDL_Renderer *renderer)
 {
@@ -69,6 +70,11 @@ void SetPosition(Entity* e,float x,float y)
 {
 	e->position.x = x;
 	e->position.y = y;
+}
+
+void PrintPosition(Entity* e)
+{
+	printf("x: %f y: %f\n", e->position.x, e->position.y);
 }
 
 void SetVelocity(Entity* e,float x,float y)

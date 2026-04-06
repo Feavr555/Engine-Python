@@ -11,18 +11,6 @@
 
 #include <debug_mode.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#include <stdio.h>
-#include <psapi.h>
-#endif
-
-#ifdef __linux__
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#endif
-
 bool Init(APP *app,const char*title)
 {
 	app->window = NULL;
