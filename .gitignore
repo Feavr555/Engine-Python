@@ -1,0 +1,5 @@
+__pycache__/
+libgame.so
+obj/
+game
+game_debug
