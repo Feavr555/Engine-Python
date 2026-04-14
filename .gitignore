@@ -3,3 +3,4 @@ libgame.so
 obj/
 game
 game_debug
+lib/__pycache__/
