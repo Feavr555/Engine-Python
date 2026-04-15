@@ -8,8 +8,18 @@ void Init_TextureManager(TextureManager *tman,SDL_Renderer *renderer)
 }
 void Load_TextureManager(TextureManager *tman,const char *path,char *const id)
 {
-	SDL_Surface *surface = IMG_Load(path);
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(tman->renderer,surface);
+	SDL_Surface *surface = nullptr;
+	surface = IMG_Load(path);
+	if(surface == nullptr){
+		SDL_Log("[Load_TextureManager().surface]: %s",SDL_GetError());
+		return;
+	}
+	SDL_Texture *texture = nullptr;
+	texture = SDL_CreateTextureFromSurface(tman->renderer,surface);
+	if(texture == nullptr){
+		SDL_Log("[Load_TextureManager().texture]: %s",SDL_GetError());
+		return;
+	}
 	char *id_t = (char*)malloc(strlen(id)+1);
 	strcpy(id_t,id);
 	SDL_LockSurface(surface);
@@ -23,6 +33,7 @@ Texture *Search_TextureManager(TextureManager *tman,const char *name)
 	Texture *t = Vector_getValue(tman->textures,0);
 	for(uint32_t i=0; i<tman->textures->size; i++)
 		if(!strcmp(name,(t++)->id)) return --t;
+	SDL_Log("[Search_TextureManager()]: Not search %s",name);
 	return NULL;
 }
 void Free_TextureManager(TextureManager *tman)

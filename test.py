@@ -60,7 +60,7 @@ if __name__ == "__main__":
 		print(f"\033c")
 		print(f"Entities => {num}")
 		app.man.Draw(app.GetDeltaTime(),app.GetCam())
-		print(f"\033FPS => {app.GetFPS()}\nMem => {app.GetMem()}")
+		print(f"FPS => {app.GetFPS()}\nMem => {app.GetMem()}")
 
 		app.DrawEnd()
 
