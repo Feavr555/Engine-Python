@@ -17,17 +17,19 @@ void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite)
 {
 	Load_TextureManager(&man->tman,path,sprite);
 }
-void CreateEntity(EntityManager *man,char* sprite,char* name)
+bool CreateEntity(EntityManager *man,char* sprite,char* name)
 {
 
-	if (man->mu.mu == NULL) {
-    printf("ERROR: El mutex no ha sido inicializado con SDL_CreateMutex()\n");
-	} else {
-		SDL_LockMutex(man->mu.mu);
-	}
-	//if(man->entities->size > 10000) return;
+	if (man->mu.mu == nullptr){
+		printf("ERROR: El mutex no ha sido inicializado con SDL_CreateMutex()\n");
+		return false;
+	}else SDL_LockMutex(man->mu.mu);
 	Entity e;
 	Texture *t = Search_TextureManager(&man->tman,sprite);
+	if(t==nullptr){
+		SDL_Log("[CreateEntity().Texture]: Entity: %c%s%c Sprite: %c%s%c",0x22,name,0x22,0x22,sprite,0x22);
+		return false;
+	}
 	InitEntity(&e,t,name,man->renderer);
 	e.STATESPRITE = ANIMATION_TOKEN_STATIC;
 	e.ID = man->countIDs++;
@@ -37,11 +39,19 @@ void CreateEntity(EntityManager *man,char* sprite,char* name)
 	shput(man->TableHash_Entities,name,e.ID);
 	Vector_pushback(man->entities,&e);
 	SDL_UnlockMutex(man->mu.mu);
+	return true;
 }
 void ChangSprite_EntityManager(EntityManager *man,const char *entity,const char* sprite)
 {
 	Texture *t = Search_TextureManager(&man->tman,sprite);
 	Entity * e = SearchEntity(man,entity);
+	if(t==nullptr){
+		SDL_Log("[ChangSprite_EntityManager().Texture]: %c%s%c",0x22,sprite,0x22);
+		return;
+	}else if(e==nullptr){
+		SDL_Log("[ChangSprite_EntityManager().Entity]: %c%s%c",0x22,entity,0x22);
+		return;
+	}
 	ChangSprite(e,t);
 }
 Entity *SearchEntity(EntityManager *man,const char* name)
@@ -50,6 +60,7 @@ Entity *SearchEntity(EntityManager *man,const char* name)
 	Entity *e = Vector_getValue(man->entities,0);
 	for(uint32_t i=0; i<man->entities->size; i++)
 		if(!strcmp(name,(e++)->id)) return --e;
+	SDL_Log("[SearchEntity()]: Not search entity: %c%s%c",0x22,name,0x22);
 	return NULL;
 }
 uint64_t getID_SearchEntity(EntityManager *man,const char*name)

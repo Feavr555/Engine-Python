@@ -15,7 +15,7 @@ typedef struct{
 }TextureManager;
 
 void Init_TextureManager(TextureManager *tman,SDL_Renderer *renderer);
-void Load_TextureManager(TextureManager *tman,const char *path,char *const id);
+bool Load_TextureManager(TextureManager *tman,const char *path,char *const id);
 Texture *Search_TextureManager(TextureManager *tman,const char *name);
 void Free_TextureManager(TextureManager *tman);
 

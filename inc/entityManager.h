@@ -20,7 +20,7 @@ typedef struct{
 
 void InitEntityManager(EntityManager *man,SDL_Renderer *renderer);
 void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite);
-void CreateEntity(EntityManager *man,char *sprite,char *name);
+bool CreateEntity(EntityManager *man,char *sprite,char *name);
 Entity *SearchEntity(EntityManager *man,const char* name);
 void ChangSprite_EntityManager(EntityManager *man,const char* entity,const char* sprite);
 void DrawEntities(EntityManager *man,float dt,SDL_FRect cam);

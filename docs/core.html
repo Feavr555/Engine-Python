@@ -60,7 +60,13 @@ body {
 
 	<p>Se está trabajando, actualmente, en el sistema de ID. El objetivo es no exponer punteros a python.</p>
 	<p>Por el momento, búsqueda HASH para devolver la ID al buscar el nombre de la entidad. Y, cambiar valores de las entidades por esa ID.</p>
+
+	<p>En la siguiente sección se relatan algunos cambios importantes: LoadSprite_EntityManager(), ChangSprite_EntityManager() interrumpen su flujo si no encuentran algo.<br>CreateEntity() Devuelve nullptr si falla.</p>
 <pre class="section bgtest colortest">
+void LoadSprite_EntityManager(EntityManager *man,const char* path,char* sprite);
+bool CreateEntity(EntityManager *man,char *sprite,char *name);
+Entity *SearchEntity(EntityManager *man,const char* name);
+void ChangSprite_EntityManager(EntityManager *man,const char* entity,const char* sprite);
 </pre>
 
 
