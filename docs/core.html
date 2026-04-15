@@ -54,23 +54,16 @@ body {
 
 <body>
 
-	<center><h1>Documentación de Engine-Python</h1></center>
+	<center><h1>Documentación sobre el core del motor</h1></center>
 
-	<p>Aquí se informará de las novedades del core del motor (ficheros .c) e interfaz (.py)</p>
+	<p>Estrictamente el core tiene interfaz, pero está se llama desde python, no por el usuario.</p>
 
-	<p>Instrucciones para compilar</p>
+	<p>Se está trabajando, actualmente, en el sistema de ID. El objetivo es no exponer punteros a python.</p>
+	<p>Por el momento, búsqueda HASH para devolver la ID al buscar el nombre de la entidad. Y, cambiar valores de las entidades por esa ID.</p>
 <pre class="section bgtest colortest">
-# Compilación
-bash make.sh
-# Modo depuración
-bash make.sh debug
-# Limpieza [libgame.so y obj/*.o]
-bash make.sh clean
 </pre>
-	<p>Aún se está en trabajo para los otros medios, cómo Makefile, CMakeLists.txt, se aceptan propuestas!</p>
 
-	<a href="core.html">Documentación del core</a><br><br>
-	<a href="interface.html">Documentación de la interfaz</a><br><br>
+
 
 </body>
 </html>
